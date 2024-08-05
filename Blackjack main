@@ -1,0 +1,131 @@
+
+# while play =="y":
+import random
+from art import logo
+from replit import clear
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10] #13 cards. Ace is 1 or 11
+
+def deal(hand):
+  """return a number chosen from list of cards"""
+  newcard = cards[random.randint(0,12)]
+  hand.append(newcard)
+
+def score(hand):
+  """return added score of a list"""
+  tally = 0
+  #tally up all cards
+  for x in hand:
+    tally += x
+  #if tally over 21 and Ace is in hand, count ace as 1 and - tally by 10
+  if tally > 21 and (11 in hand): 
+    hand[hand.index(11)] = 1
+    tally -= 10
+  return tally
+
+
+#5, 10, 11 score 35
+#5, 10, 1 score still 35. need to recount score
+
+def over21(x):
+  """return BOOLEAN if a int is over 21"""
+  if x > 21:
+    return True
+  else:
+    return False
+
+# def blackjack():
+#   print("abc")
+  #clear hands
+def play():
+  answer = input("Would you play to play blackjack?\n").lower()
+  if answer == "y":
+    clear()
+    print(logo)
+    blackjack()
+  
+def blackjack(): 
+  #this function may be already blkjack(). may need to slim down?
+  draw = "y"
+  pc_hand =[]
+  pc_score = 0
+  banker_hand = []
+  banker_score = 0
+  #while not bust and play choose to draw
+  deal(pc_hand)
+  deal(pc_hand)
+  pc_score = score(pc_hand)
+  deal(banker_hand)
+  deal(banker_hand)
+  banker_score = score(banker_hand)
+
+  def startscore():
+    print(f"Your hand is {pc_hand}, score {pc_score}")
+    print(f"Dealer's first card is {banker_hand[0]}")
+  
+  #blackjack?
+  if pc_score == 21 and banker_score == 21:
+    startscore()
+    print("You both draw blackjack!")
+    
+    
+  elif pc_score == 21 and not banker_score == 21:
+    startscore()
+    print("You win with blackjack!")
+  elif banker_score == 21 and not pc_score == 21:
+    startscore()
+    print("Dealer win with blackjack!")
+  else:
+    startscore()
+  
+    #while loop for PC
+    while over21(pc_score) or draw == "y":
+      if over21(pc_score):
+        print(f"BUST! your hand is {pc_hand}, your score is {pc_score}.")
+        play()
+        
+      else:
+        draw = input("Would you like another card? Y/N\n").lower()
+        if draw == "y":
+          deal(pc_hand)
+          pc_score = score(pc_hand) #calculate score
+          print(f"Your hand is {pc_hand}, score {pc_score}")
+
+        else:
+      #while loop for dealer`
+          while banker_score < 17: #banker must deal if hand < 17
+            deal(banker_hand)
+            banker_score = score(banker_hand)
+            
+          print(f"Your final hand is {pc_hand}, final score {pc_score}")
+          print(f"Dealer's final hand is {banker_hand}, final score is {banker_score}")
+          if pc_score > banker_score:
+            print("Congradulations! You win!")
+          elif pc_score == banker_score:
+            print("Its a draw!")
+          elif banker_score > pc_score:
+            print("You lose!")
+            
+  play()
+        
+  ## computer only draws more cards after PC stop drawing
+
+play()
+    
+  # pc_hands.append(deal())
+  # pc_hands.append(deal())
+  # pc_score = score(pc_hands)
+###test game
+# print(f"your hand is {pc_hands}")
+# print(f"your score is {pc_score}") 
+
+
+
+
+  #if over 21, lose
+
+# def compare():
+  
+  
+
+  
